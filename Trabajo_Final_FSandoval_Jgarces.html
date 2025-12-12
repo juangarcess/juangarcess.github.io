@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Felipe Sandoval S., Juan Garcés S.">
+
+<title>Trabajo Final Análisis de Datos con R Intermedio</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="Trabajo_Final_FSandoval_Jgarces_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Trabajo_Final_FSandoval_Jgarces_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="Trabajo_Final_FSandoval_Jgarces_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="Trabajo_Final_FSandoval_Jgarces_files/libs/quarto-html/popper.min.js"></script>
+<script src="Trabajo_Final_FSandoval_Jgarces_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Trabajo_Final_FSandoval_Jgarces_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Trabajo_Final_FSandoval_Jgarces_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Trabajo_Final_FSandoval_Jgarces_files/libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Trabajo_Final_FSandoval_Jgarces_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Trabajo_Final_FSandoval_Jgarces_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Trabajo_Final_FSandoval_Jgarces_files/libs/bootstrap/bootstrap-bb462d781dde1847d9e3ccf7736099dd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">Trabajo Final Análisis de Datos con R Intermedio</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Código</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Mostrar todo el código</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Ocultar todo el código</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">Ver el código fuente</a></li></ul></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Autor/a</div>
+    <div class="quarto-title-meta-contents">
+             <p>Felipe Sandoval S., Juan Garcés S. </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Fecha de publicación</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">12 de diciembre de 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introducción" class="level1">
+<h1>Introducción</h1>
+<p>El Censo de Población y Vivienda 2024 se realizó en Chile entre los meses de marzo y julio, destacándose por ser el operativo estadístico más grande llevado a cabo por el Instituto Nacional de Estadísticas (INE) y por constituir un megaproyecto nacional en términos humanos y logísticos.</p>
+<p>En la implementación del Censo 2024 se incorporaron avances tecnológicos y metodológicos significativos, entre los cuales destacan dos innovaciones principales: (i) el uso de herramientas tecnológicas para la recolección y su monitoreo; y (ii) la realización de un censo de mayor duración, orientado a la medición de la residencia habitual, conocido como censo de derecho. Este enfoque permitió obtener un registro actualizado de la cantidad de personas que residen en el país, así como su distribución territorial y condiciones de vida.</p>
+<p>Contar con datos censales en materias como fecundidad, envejecimiento y migración, entre otras, resulta fundamental para la formulación y evaluación de políticas públicas y privadas en ámbitos esenciales para el desarrollo nacional, tales como vivienda, infraestructura sanitaria, salud, educación, empleo y pensiones.</p>
+<p>Los resultados del censo se encuentran en <a href="https://censo2024.ine.gob.cl/" class="uri">https://censo2024.ine.gob.cl/</a>.</p>
+<p>En este informe se anañizan puntualmente variables asociadas a la situación en la fuerza de trabajo de las personas de 15 años y más para las comunas de la Región del Biobío. Esta información es frecuentemente pedida por las comunas, ya que la Encuesta Nacional de Empleo (ENE) que es el instrumento oficial diseñado para caracterizar a la población en edad de trabajar (PET), es una operación estadística que se basa en una muestra probabilística cuyos niveles de estimación llegan hasta el nivel provincial y algunas conurbaciones, pero no a nivel comunal. Mayores antecedentes en <a href="https://www.ine.gob.cl/estadisticas/sociales/mercado-laboral/ocupacion-y-desocupacion" class="uri">https://www.ine.gob.cl/estadisticas/sociales/mercado-laboral/ocupacion-y-desocupacion</a>.</p>
+<p>Es importante señalar que los análisis y resultados <strong>no tienen el caracter de publicacion estadística oficial</strong> y se hacen solo con fines educativos para cumplir requisitos del Curso de R Intermedio.</p>
+</section>
+<section id="conceptos-previos" class="level1">
+<h1>Conceptos previos</h1>
+<p>Como se mencionó, se presentarSe presentarán las tasas de ocupación, desocupación y participación laboral por comunas de la Región del Biobío, para ambos sexos, hombres y mujeres, basándose en los resultados del Censo 2024. Previamente, es pertinente definir estos indicadores.</p>
+<p>La <strong>tasa de desocupación</strong> se define como:</p>
+<p><span class="math display">\[ \text{tasa de desocupación}= \frac{\text{total de personas desocupadas}}{\text{total de personas ocupadas + total de personas desocupadas}} \cdot 100\% \]</span></p>
+<p>Por su parte, la <strong>tasa de ocupación</strong> se define de la siguiente forma:</p>
+<p><span class="math display">\[ \text{tasa de ocupación}= \frac{\text{total de personas ocupadas}}{\text{total de personas en edad de trabajar (15 años de edad o más)}} \cdot 100\% \]</span></p>
+<p>Finalmente, la <strong>tasa de participación</strong> se define:</p>
+<p><span class="math display">\[ \text{tasa de participación}= \frac{\text{total de personas ocupadas+total de personas desocupadas}}{\text{total de personas en edad de trabajar (15 años de edad o más)}} \cdot 100\% \]</span></p>
+</section>
+<section id="carga-y-preparación-de-los-datos" class="level1">
+<h1>Carga y Preparación de los datos</h1>
+<p>Se utilizará la base de datos de personas del censo 2024, que en diciembre de 2025 se publicó a nivel de comuna.</p>
+<p>El Manual de uso de la base de datos, el archivo csv y el diccionario de variables se descargan en el siguiente <a href="https://censo2024.ine.gob.cl/resultados/" title="pinche aquí">Enlace</a> (Se debe ir a descargar microdato Personas Censo 2024 (csv), descomprimirlo y pegarlo en la carpeta datos del proyecto, para que ejecutar correctamente el código).</p>
+<section id="carga-de-paquetes" class="level2">
+<h2 class="anchored" data-anchor-id="carga-de-paquetes">Carga de paquetes</h2>
+<p>Los paquetes que se utilizarán se cargan a continuación</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Mostrar/ocultar código</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(<span class="st">"arrow"</span>)){<span class="fu">install.packages</span>(<span class="st">"arrow"</span>)}      <span class="do">### Se utiliza el paquete arrow como lo recomienda el manual</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(<span class="st">"dplyr"</span>)){<span class="fu">install.packages</span>(<span class="st">"dplyr"</span>)}      <span class="do">### Manipulación de datos, filter(), select(), mutate(), etc</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(<span class="st">"purrr"</span>)){<span class="fu">install.packages</span>(<span class="st">"purrr"</span>)}      <span class="do">### iteraciones de funciones sobre listas, vectorses, df, etc.</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(<span class="st">"tidyr"</span>)){<span class="fu">install.packages</span>(<span class="st">"tidyr"</span>)}        <span class="do">###  ordenar y reestructurar datos, pivot_longer(), pivot_wider(), etc.</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(<span class="st">"ggplot2"</span>)){<span class="fu">install.packages</span>(<span class="st">"ggplot2"</span>)}      <span class="do">### Graficos </span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(<span class="st">"here"</span>)){<span class="fu">install.packages</span>(<span class="st">"here"</span>)}  <span class="do">###para trabajar mejor con las rutas</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="carga-de-datos" class="level2">
+<h2 class="anchored" data-anchor-id="carga-de-datos">Carga de datos</h2>
+<p>Según el manual de uso de microdatos, se utilizará el paquete <code>arrow</code> , que brinda mayor eficiencia para usar archivos de gran tamaño. Primero se prepara un elemento llamado <code>schema</code>, con las características de las variables y posteriormente se abre el archivo csv, y las variables de interés, se colectan a través de la función <code>collect()</code>, pudiendo usarse la sintaxis de <code>dplyr</code>.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Mostrar/ocultar código</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>personas_censo2024_schema <span class="ot">&lt;-</span> <span class="fu">schema</span>(   <span class="do">### Esquema de la tabla persona especificado en el punto 7.1.4.3. del manual.</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">id_vivienda=</span><span class="fu">int64</span>(),</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">id_hogar =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">id_persona =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">region =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">provincia =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">comuna =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">comuna_bajo_umbral =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">area =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">tipo_operativo =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">sexo =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">edad =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">edad_quinquenal =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">parentesco =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">p23_est_civil =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">p24_lug_resid5 =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">p24_lug_resid5_esp =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">p25_lug_nacimiento =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">p25_lug_nacimiento_rec =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">p25_lug_nacimiento_esp =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">p26_llegada_periodo =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">p27_nacionalidad =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">p27_nacionalidad_esp =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">p27_nacionalidad_rec =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  <span class="at">p28_autoid_pueblo =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  <span class="at">p28_pueblo_pert =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>  <span class="at">p29_afrodescendencia_rec =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">p29_afrodescendencia =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">p30_lengua_indigena =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">p30_lengua_indigena_rec =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>  <span class="at">p31_religion =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>  <span class="at">p31_religion_rec =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>  <span class="at">p32a_dificultad_ver =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>  <span class="at">p32b_dificultad_oir =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>  <span class="at">p32c_dificultad_mover =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>  <span class="at">p32d_dificultad_cogni =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>  <span class="at">p32e_dificultad_cuidado =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>  <span class="at">p32f_dificultad_comunic =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>  <span class="at">discapacidad =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>  <span class="at">p33_edu_asiste =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>  <span class="at">asistencia_parv =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>  <span class="at">asistencia_basica =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>  <span class="at">asistencia_media =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>  <span class="at">asistencia_superior =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>  <span class="at">p37_alfabet =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>  <span class="at">escolaridad =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>  <span class="at">cine11 =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>  <span class="at">sit_fuerza_trabajo =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>  <span class="at">p40_cise_rec =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>  <span class="at">depend_econ_deficit_hab =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>  <span class="at">cod_ciuo =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>  <span class="at">cod_caenes =</span> <span class="fu">string</span>(),</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>  <span class="at">p44_lug_trab =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>  <span class="at">p44_lug_trab_esp =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>  <span class="at">p45_medio_transporte =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>  <span class="at">p46a_tot_hijs_nac =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>  <span class="at">p46b_hijas_nac =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>  <span class="at">p46c_hijos_nac =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>  <span class="at">p47a_tot_hijs_sobrev =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>  <span class="at">p47b_hijas_sobrev =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>  <span class="at">p47c_hijos_sobrev =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>  <span class="at">p48_anio_nac_uh =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>  <span class="at">p48_mes_nac_uh =</span> <span class="fu">int64</span>(),</span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>  <span class="at">div_genero =</span> <span class="fu">int64</span>()</span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>personas_censo2024 <span class="ot">&lt;-</span><span class="fu">open_dataset</span>(<span class="fu">here</span>(<span class="st">"datos/personas_censo2024.csv"</span>),     <span class="do">### permite leer datos muy pesados en formato "lazy", para no utilizar toda la memoria</span></span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">format =</span> <span class="st">"csv"</span>, <span class="at">delim =</span> <span class="st">";"</span>, <span class="at">schema =</span> personas_censo2024_schema, <span class="at">skip =</span> <span class="dv">1</span>)</span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>region <span class="ot">&lt;-</span> personas_censo2024 <span class="sc">%&gt;%</span>    </span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>        <span class="fu">filter</span>(region<span class="sc">==</span><span class="dv">8</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>        <span class="fu">select</span>(comuna, area,sit_fuerza_trabajo,edad, sexo, cod_caenes, p44_lug_trab ) <span class="sc">%&gt;%</span>  <span class="do">### se seleccionan algunas variables con las que se trabajaran</span></span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>        <span class="fu">collect</span>()</span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>region2 <span class="ot">&lt;-</span> region <span class="sc">%&gt;%</span> <span class="do">#### se agregan los labels segun los levels para que se entienda de mejor forma para el lector, que vea datos y no solo numeros</span></span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>    <span class="at">area =</span> <span class="fu">factor</span>(area,</span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a>                  <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>),</span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a>                  <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Urbano"</span>, <span class="st">"Rural"</span>)),</span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>    <span class="at">sexo =</span> <span class="fu">factor</span>(sexo,</span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a>                  <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>),</span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>                  <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Hombres"</span>, <span class="st">"Mujeres"</span>)),</span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a>    <span class="at">sit_fuerza_trabajo =</span> <span class="fu">factor</span>(sit_fuerza_trabajo,</span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a>                                <span class="at">levels =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">99</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>),</span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a>                                <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"No responde"</span>, </span>
+<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a>                                           <span class="st">"Ocupado"</span>, </span>
+<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a>                                           <span class="st">"Desocupado"</span>,</span>
+<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a>                                           <span class="st">"Fuera de la fuerza de trabajo"</span>)),</span>
+<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a>    <span class="at">p44_lug_trab =</span> <span class="fu">factor</span>(p44_lug_trab,</span>
+<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a>                          <span class="at">levels =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">99</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>),</span>
+<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a>                          <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"No responde"</span>, </span>
+<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a>                                     <span class="st">"En su comuna, en la vivienda"</span>, </span>
+<span id="cb2-94"><a href="#cb2-94" aria-hidden="true" tabindex="-1"></a>                                     <span class="st">"En su comuna, fuera de la vivienda"</span>,</span>
+<span id="cb2-95"><a href="#cb2-95" aria-hidden="true" tabindex="-1"></a>                                     <span class="st">"En otra comuna"</span>,</span>
+<span id="cb2-96"><a href="#cb2-96" aria-hidden="true" tabindex="-1"></a>                                     <span class="st">"En otro país"</span>,</span>
+<span id="cb2-97"><a href="#cb2-97" aria-hidden="true" tabindex="-1"></a>                                     <span class="st">"Varias comunas o países"</span>))</span>
+<span id="cb2-98"><a href="#cb2-98" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb2-99"><a href="#cb2-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-100"><a href="#cb2-100" aria-hidden="true" tabindex="-1"></a><span class="do">##removemos para ahorrar memoria en una de esas</span></span>
+<span id="cb2-101"><a href="#cb2-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-102"><a href="#cb2-102" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(personas_censo2024, personas_censo2024_schema)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Entonces, con el tibble region2, ya tiene la información filtrada para la Región del Biobío, con las etiquetas correspondientes. A continuación se presenta, a modo de ejemplo, las ptimeras 10 filas.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Mostrar/ocultar código</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(region2, <span class="dv">10</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 7
+   comuna area   sit_fuerza_trabajo           edad sexo  cod_caenes p44_lug_trab
+    &lt;int&gt; &lt;fct&gt;  &lt;fct&gt;                       &lt;int&gt; &lt;fct&gt; &lt;chr&gt;      &lt;fct&gt;       
+ 1   8301 Urbano Fuera de la fuerza de trab…    64 Muje… ""         &lt;NA&gt;        
+ 2   8111 Rural  Ocupado                        33 Homb… "F"        En su comun…
+ 3   8111 Rural  Ocupado                        32 Muje… "Q"        En su comun…
+ 4   8111 Rural  &lt;NA&gt;                            4 Muje… ""         &lt;NA&gt;        
+ 5   8111 Rural  &lt;NA&gt;                           10 Homb… ""         &lt;NA&gt;        
+ 6   8111 Rural  &lt;NA&gt;                           12 Homb… ""         &lt;NA&gt;        
+ 7   8111 Rural  Fuera de la fuerza de trab…    15 Homb… ""         &lt;NA&gt;        
+ 8   8304 Rural  Fuera de la fuerza de trab…    69 Homb… ""         &lt;NA&gt;        
+ 9   8304 Rural  Fuera de la fuerza de trab…    66 Muje… ""         &lt;NA&gt;        
+10   8101 Urbano Ocupado                        29 Muje… "999"      En otra com…</code></pre>
+</div>
+</div>
+<p>A continuación, se crean tablas para personas ocupadas, desocupadas y fuera de la fuerza de trabajo por comuna de la Región del Biobío. Se utilizarán posteriormente para crear gráficos y tablas.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Mostrar/ocultar código</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ocupados <span class="ot">&lt;-</span> region <span class="sc">%&gt;%</span>             <span class="do">### tabla de ocupados cruda</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>            <span class="fu">filter</span>(sit_fuerza_trabajo<span class="sc">==</span><span class="dv">1</span>) </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>desocupados <span class="ot">&lt;-</span> region <span class="sc">%&gt;%</span>              <span class="do">### tabla de desocupados cruda</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>            <span class="fu">filter</span>(sit_fuerza_trabajo<span class="sc">==</span><span class="dv">2</span>) </span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>inactivos <span class="ot">&lt;-</span> region <span class="sc">%&gt;%</span>             <span class="do">### tabla de inactivos cruda</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>            <span class="fu">filter</span>(sit_fuerza_trabajo<span class="sc">==</span><span class="dv">3</span>) </span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>menores15 <span class="ot">&lt;-</span> region <span class="sc">%&gt;%</span>            <span class="do">### tabla de menores de 15 años que sirve para la validación de los NA correspondientes</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>            <span class="fu">select</span>(comuna, edad, sexo) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>            <span class="fu">filter</span>(edad<span class="sc">&lt;</span><span class="dv">15</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>            <span class="fu">group_by</span>(comuna) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>            <span class="fu">count</span>(sexo)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>sit_fdt_total <span class="ot">&lt;-</span> region <span class="sc">%&gt;%</span>    <span class="do">### tabla de situación de la fuerza de trabajo sin desagregar por sexo</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(sit_fuerza_trabajo)) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">select</span>(comuna, sit_fuerza_trabajo) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">group_by</span>(comuna) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">count</span>(sit_fuerza_trabajo)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>sit_fdt <span class="ot">&lt;-</span> region <span class="sc">%&gt;%</span>         <span class="do">### tabla de situación de la fuerza de trabajo desagregada por sexo</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>          <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(sit_fuerza_trabajo)) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>          <span class="fu">select</span>( comuna, sit_fuerza_trabajo, sexo) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>          <span class="fu">group_by</span>(comuna, sit_fuerza_trabajo) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>          <span class="fu">count</span>(sexo)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+</section>
+<section id="inclusión-de-funciones" class="level1">
+<h1>Inclusión de funciones</h1>
+<p>El siguiente código llama a un archivo dentro del proyecto en que están creadas algunas funciones útiles.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Mostrar/ocultar código</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a> <span class="fu">source</span>( <span class="fu">here</span>(<span class="st">"scripts/functions.R"</span>))   </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="do">#### se llama al script adicional de funciones, agregar que no son funcniones totalmente genéricas y que dependen de los resultados obtenidos antes en este mismo script</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="resultados" class="level1">
+<h1>Resultados</h1>
+<p>Es importante señalar que los cálculos que se realizan son en función de las personas que respondieron a las preguntas de situación laboral, es decir, se considerará como población en edad de trabajar a las personas de 15 años o más de edad y que hayan respondido efectivamente estas preguntas.</p>
+<p>Para efectos de comparación, a continuación se presentan los indicadores para la Región del Biobío, para Ambos sexos, hombres y mujeres.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Mostrar/ocultar código</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>resultados_region<span class="ot">&lt;-</span>region2 <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(sit_fuerza_trabajo, sexo) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">Total=</span><span class="fu">n</span>())</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="do">##Hombres</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>resultados_region_h<span class="ot">&lt;-</span><span class="fu">filter</span>(resultados_region, sexo<span class="sc">==</span><span class="st">"Hombres"</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>resultados_region_h<span class="ot">&lt;-</span><span class="fu">pivot_wider</span>(resultados_region_h, <span class="at">names_from =</span>sit_fuerza_trabajo, <span class="at">values_from =</span> Total)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>resultados_region_h<span class="sc">$</span>td<span class="ot">&lt;-</span>resultados_region_h<span class="sc">$</span>Desocupado<span class="sc">/</span>(resultados_region_h<span class="sc">$</span>Desocupado<span class="sc">+</span>resultados_region_h<span class="sc">$</span>Ocupado)<span class="sc">*</span><span class="dv">100</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>resultados_region_h<span class="sc">$</span>to<span class="ot">&lt;-</span>resultados_region_h<span class="sc">$</span>Ocupado <span class="sc">/</span>(resultados_region_h<span class="sc">$</span>Desocupado<span class="sc">+</span>resultados_region_h<span class="sc">$</span>Ocupado<span class="sc">+</span>resultados_region_h<span class="sc">$</span><span class="st">`</span><span class="at">Fuera de la fuerza de trabajo</span><span class="st">`</span>)<span class="sc">*</span><span class="dv">100</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>resultados_region_h<span class="sc">$</span>tp<span class="ot">&lt;-</span>(resultados_region_h<span class="sc">$</span>Desocupado<span class="sc">+</span>resultados_region_h<span class="sc">$</span>Ocupado) <span class="sc">/</span>(resultados_region_h<span class="sc">$</span>Desocupado<span class="sc">+</span>resultados_region_h<span class="sc">$</span>Ocupado<span class="sc">+</span>resultados_region_h<span class="sc">$</span><span class="st">`</span><span class="at">Fuera de la fuerza de trabajo</span><span class="st">`</span>)<span class="sc">*</span><span class="dv">100</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="do">##Mujeres</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>resultados_region_m<span class="ot">&lt;-</span><span class="fu">filter</span>(resultados_region, sexo<span class="sc">==</span><span class="st">"Mujeres"</span>)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>resultados_region_m<span class="ot">&lt;-</span><span class="fu">pivot_wider</span>(resultados_region_m, <span class="at">names_from =</span>sit_fuerza_trabajo, <span class="at">values_from =</span> Total)</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>resultados_region_m<span class="sc">$</span>td<span class="ot">&lt;-</span>resultados_region_m<span class="sc">$</span>Desocupado<span class="sc">/</span>(resultados_region_m<span class="sc">$</span>Desocupado<span class="sc">+</span>resultados_region_m<span class="sc">$</span>Ocupado)<span class="sc">*</span><span class="dv">100</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>resultados_region_m<span class="sc">$</span>to<span class="ot">&lt;-</span>resultados_region_m<span class="sc">$</span>Ocupado <span class="sc">/</span>(resultados_region_m<span class="sc">$</span>Desocupado<span class="sc">+</span>resultados_region_m<span class="sc">$</span>Ocupado<span class="sc">+</span>resultados_region_m<span class="sc">$</span><span class="st">`</span><span class="at">Fuera de la fuerza de trabajo</span><span class="st">`</span>)<span class="sc">*</span><span class="dv">100</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>resultados_region_m<span class="sc">$</span>tp<span class="ot">&lt;-</span>(resultados_region_m<span class="sc">$</span>Desocupado<span class="sc">+</span>resultados_region_m<span class="sc">$</span>Ocupado) <span class="sc">/</span>(resultados_region_m<span class="sc">$</span>Desocupado<span class="sc">+</span>resultados_region_m<span class="sc">$</span>Ocupado<span class="sc">+</span>resultados_region_m<span class="sc">$</span><span class="st">`</span><span class="at">Fuera de la fuerza de trabajo</span><span class="st">`</span>)<span class="sc">*</span><span class="dv">100</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a><span class="do">##Ambos Sexos</span></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>resultados_resumen <span class="ot">&lt;-</span> resultados_region <span class="sc">%&gt;%</span> </span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>                      <span class="fu">group_by</span>(sit_fuerza_trabajo ) <span class="sc">%&gt;%</span></span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>                      <span class="fu">summarise</span>(<span class="at">Total=</span><span class="fu">sum</span>(Total))</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>td_reg<span class="ot">&lt;-</span>resultados_resumen<span class="sc">$</span>Total[<span class="dv">3</span>]<span class="sc">/</span>(resultados_resumen<span class="sc">$</span>Total[<span class="dv">2</span>]<span class="sc">+</span>resultados_resumen<span class="sc">$</span>Total[<span class="dv">3</span>])<span class="sc">*</span><span class="dv">100</span></span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>to_reg<span class="ot">&lt;-</span>resultados_resumen<span class="sc">$</span>Total[<span class="dv">2</span>]<span class="sc">/</span>(resultados_resumen<span class="sc">$</span>Total[<span class="dv">2</span>]<span class="sc">+</span>resultados_resumen<span class="sc">$</span>Total[<span class="dv">3</span>]<span class="sc">+</span>resultados_resumen<span class="sc">$</span>Total[<span class="dv">4</span>])<span class="sc">*</span><span class="dv">100</span></span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>tp_reg<span class="ot">&lt;-</span>(resultados_resumen<span class="sc">$</span>Total[<span class="dv">2</span>]<span class="sc">+</span>resultados_resumen<span class="sc">$</span>Total[<span class="dv">3</span>])<span class="sc">/</span>(resultados_resumen<span class="sc">$</span>Total[<span class="dv">2</span>]<span class="sc">+</span>resultados_resumen<span class="sc">$</span>Total[<span class="dv">3</span>]<span class="sc">+</span>resultados_resumen<span class="sc">$</span>Total[<span class="dv">4</span>])<span class="sc">*</span><span class="dv">100</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<ul>
+<li><p><strong>Tasa de desocupación</strong></p>
+<p>Ambos sexos: <code>10.3</code> %</p>
+<p>Hombres: <code>11.2</code> %</p>
+<p>Mujeres: <code>9.2</code> %</p></li>
+<li><p><strong>Tasa de Ocupación</strong></p>
+<p>Ambos sexos: <code>49.3</code> %</p>
+<p>Hombres: <code>58.6</code> %</p>
+<p>Mujeres: <code>40.9</code> %</p></li>
+<li><p><strong>Tasa de Participación</strong></p>
+<p>Ambos sexos: <code>55</code> %</p>
+<p>Hombres: <code>66</code> %</p>
+<p>Mujeres: <code>45.1</code> %</p></li>
+</ul>
+<p>A partir de los resultados anteriores, se aprecian brechas entre hombres y mujeres, que también se observan en los resultados de la Encuesta Nacional de Empleo, las bajas tasas de ocupación y participación de las mujeres, comparado con los hombres.</p>
+<section id="tasa-de-desocupación-a-nivel-comunal" class="level2">
+<h2 class="anchored" data-anchor-id="tasa-de-desocupación-a-nivel-comunal">Tasa de desocupación a nivel comunal</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Mostrar/ocultar código</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>codigos <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">unique</span>(region2<span class="sc">$</span>comuna))   <span class="do">#### Para la uilizacion de la función map y derivados se necesita un orden que se obtienen a traves de estos codigos</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>df_d <span class="ot">&lt;-</span> <span class="fu">map_df</span>(codigos, tasa_desocupacion) <span class="sc">%&gt;%</span>   <span class="do">### La función map_df itera una funcion sobre una lista de datos y los apila</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">nombres_comuna</span>(.) <span class="sc">%&gt;%</span>             </span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">pivot</span>(.)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>df_o <span class="ot">&lt;-</span> <span class="fu">map_df</span>(codigos, tasa_ocupacion) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        <span class="fu">nombres_comuna</span>(.) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>        <span class="fu">pivot</span>(.)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>df_p <span class="ot">&lt;-</span> <span class="fu">map_df</span>(codigos, tasa_participacion) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>        <span class="fu">nombres_comuna</span>(.) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>        <span class="fu">pivot</span>(.)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>grafico_tasas_desocupacion <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df_d, <span class="fu">aes</span>(<span class="at">x =</span> comuna, <span class="at">y =</span> tasa, <span class="at">fill =</span> grupo)) <span class="sc">+</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="fu">position_dodge</span>()) <span class="sc">+</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Tasa de Desocupación por Comuna"</span>,</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>                              <span class="at">x =</span> <span class="st">"Comuna"</span>,</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>                              <span class="at">y =</span> <span class="st">"Tasa (%)"</span>,</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>                              <span class="at">fill =</span> <span class="st">"Grupo"</span>) <span class="sc">+</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>grafico_tasas_desocupacion</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Trabajo_Final_FSandoval_Jgarces_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Mostrar/ocultar código</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>df_dc<span class="ot">&lt;-</span><span class="fu">filter</span>(df_d, grupo<span class="sc">==</span><span class="st">"Total"</span> )</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>df_dc<span class="ot">&lt;-</span><span class="fu">arrange</span>(df_dc,<span class="sc">-</span>tasa )</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>La comuna con mayor tasa de desocupación es Curanilahue con 8.2 %, mientras que la menor tasa de desocupación se registró en Contulmo con 3 %.</p>
+</section>
+<section id="tasa-de-ocupación-a-nivel-comunal" class="level2">
+<h2 class="anchored" data-anchor-id="tasa-de-ocupación-a-nivel-comunal">Tasa de ocupación a nivel comunal</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Mostrar/ocultar código</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>grafico_tasas_ocupacion <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df_o, <span class="fu">aes</span>(<span class="at">x =</span> comuna, <span class="at">y =</span> tasa, <span class="at">fill =</span> grupo)) <span class="sc">+</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="fu">position_dodge</span>()) <span class="sc">+</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Tasa de Ocupación por Comuna"</span>,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">x =</span> <span class="st">"Comuna"</span>,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>                           <span class="at">y =</span> <span class="st">"Tasa (%)"</span>,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>                           <span class="at">fill =</span> <span class="st">"Grupo"</span>) <span class="sc">+</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>grafico_tasas_ocupacion</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Trabajo_Final_FSandoval_Jgarces_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Mostrar/ocultar código</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>df_oc<span class="ot">&lt;-</span><span class="fu">filter</span>(df_o, grupo<span class="sc">==</span><span class="st">"Total"</span> )</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>df_oc<span class="ot">&lt;-</span><span class="fu">arrange</span>(df_oc,<span class="sc">-</span>tasa )</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>La comuna con mayor tasa de ocupación es San Pedro de la Paz con 57.5 %, mientras que la menor tasa de ocupación se registró en Alto Biobio con 30.1 %.</p>
+</section>
+<section id="tasa-de-participación-a-nivel-comunal" class="level2">
+<h2 class="anchored" data-anchor-id="tasa-de-participación-a-nivel-comunal">Tasa de participación a nivel comunal</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Mostrar/ocultar código</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>grafico_tasas_participacion <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df_p, <span class="fu">aes</span>(<span class="at">x =</span> comuna, <span class="at">y =</span> tasa, <span class="at">fill =</span> grupo)) <span class="sc">+</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="fu">position_dodge</span>()) <span class="sc">+</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Tasa de Participación por Comuna"</span>,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>                               <span class="at">x =</span> <span class="st">"Comuna"</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>                               <span class="at">y =</span> <span class="st">"Tasa (%)"</span>,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>                               <span class="at">fill =</span> <span class="st">"Grupo"</span>) <span class="sc">+</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>                             <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>                             <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>grafico_tasas_participacion</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Trabajo_Final_FSandoval_Jgarces_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Mostrar/ocultar código</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>df_pc<span class="ot">&lt;-</span><span class="fu">filter</span>(df_p, grupo<span class="sc">==</span><span class="st">"Total"</span> )</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>df_pc<span class="ot">&lt;-</span><span class="fu">arrange</span>(df_pc,<span class="sc">-</span>tasa )</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>La comuna con mayor tasa de participación San Pedro de la Paz con 62.2 %, mientras que la menor tasa de participación se registró en Alto Biobio con 33.7 %.</p>
+</section>
+</section>
+<section id="conclusiones" class="level1">
+<h1>Conclusiones</h1>
+<p>En este documento se han presentado indicadores laborales para las comunas de la Región del Biobío, desagregados por sexo.</p>
+<p>En el caso de las tasas de ocupación y participación, se aprecia un patrón similar al de las estimaciones a partir de la Encuesta Nacional de Empleo (ENE), es decir, grandes brechas en desmedro de las mujeres respecto de los hombres.</p>
+<p>Sin embargo, en el caso de la tasa de desocupación, a diferencia de la ENE, la brecha entre hombres y mujeres en la tasa de desocupación es en desmedro de los hombres, es decir, éstos presentan una tasa de desocupación mayor que en el caso de las mujeres. Una hipótesis que podría explicar estas diferencias, y que puede ser parte de un estudio futuro, es la forma diferente en que se indaga acerca de la situación laboral de las personas, ya sea en el fraseo de las preguntas, flujo del cuestionario, entre otros.</p>
+<p>En cualquier caso, es importante recalcar que la operación estadística que entrega cifras oficiales respecto de la situación de la población en edad de trabajar (PET) en el mercado laboral, es justamente la Encuesta Nacional de Empleo del INE.</p>
+<p>El presente documento fue elaborado con el fin de aplicar los contenidos entregados en el curso Análisis de datos con R Intermedio.</p>
+<!-- -->
+
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiado");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiado");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Ejecutar el código</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="sourceCode" id="cb14" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Trabajo Final Análisis de Datos con R Intermedio"</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "Felipe Sandoval S., Juan Garcés S."</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="an">lang:</span><span class="co"> es</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> today</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="an">editor:</span><span class="co"> visual</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span><span class="co"> html</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="an">code-fold:</span><span class="co"> true</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="an">code-summary:</span><span class="co"> "Mostrar/ocultar código"</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="an">code-tools:</span><span class="co"> true</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span><span class="co"> </span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="co">  echo: true</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="co">  message: false</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="co">  warning: false</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="fu"># Introducción</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>El Censo de Población y Vivienda 2024 se realizó en Chile entre los meses de marzo y julio, destacándose por ser el operativo estadístico más grande llevado a cabo por el Instituto Nacional de Estadísticas (INE) y por constituir un megaproyecto nacional en términos humanos y logísticos.</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>En la implementación del Censo 2024 se incorporaron avances tecnológicos y metodológicos significativos, entre los cuales destacan dos innovaciones principales: (i) el uso de herramientas tecnológicas para la recolección y su monitoreo; y (ii) la realización de un censo de mayor duración, orientado a la medición de la residencia habitual, conocido como censo de derecho. Este enfoque permitió obtener un registro actualizado de la cantidad de personas que residen en el país, así como su distribución territorial y condiciones de vida.</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>Contar con datos censales en materias como fecundidad, envejecimiento y migración, entre otras, resulta fundamental para la formulación y evaluación de políticas públicas y privadas en ámbitos esenciales para el desarrollo nacional, tales como vivienda, infraestructura sanitaria, salud, educación, empleo y pensiones.</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>Los resultados del censo se encuentran en <span class="ot">&lt;https://censo2024.ine.gob.cl/&gt;</span>.</span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>En este informe se anañizan puntualmente variables asociadas a la situación en la fuerza de trabajo de las personas de 15 años y más para las comunas de la Región del Biobío. Esta información es frecuentemente pedida por las comunas, ya que la Encuesta Nacional de Empleo (ENE) que es el instrumento oficial diseñado para caracterizar a la población en edad de trabajar (PET), es una operación estadística que se basa en una muestra probabilística cuyos niveles de estimación llegan hasta el nivel provincial y algunas conurbaciones, pero no a nivel comunal. Mayores antecedentes en <span class="ot">&lt;https://www.ine.gob.cl/estadisticas/sociales/mercado-laboral/ocupacion-y-desocupacion&gt;</span>.</span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>Es importante señalar que los análisis y resultados **no tienen el caracter de publicacion estadística oficial** y se hacen solo con fines educativos para cumplir requisitos del Curso de R Intermedio.</span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a><span class="fu"># Conceptos previos</span></span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>Como se mencionó, se presentarSe presentarán las tasas de ocupación, desocupación y participación laboral por comunas de la Región del Biobío, para ambos sexos, hombres y mujeres, basándose en los resultados del Censo 2024. Previamente, es pertinente definir estos indicadores.</span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a>La **tasa de desocupación** se define como:</span>
+<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a>$$ \text{tasa de desocupación}= \frac{\text{total de personas desocupadas}}{\text{total de personas ocupadas + total de personas desocupadas}} \cdot 100\% $$</span>
+<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a>Por su parte, la **tasa de ocupación** se define de la siguiente forma:</span>
+<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a>$$ \text{tasa de ocupación}= \frac{\text{total de personas ocupadas}}{\text{total de personas en edad de trabajar (15 años de edad o más)}} \cdot 100\% $$</span>
+<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-43"><a href="#cb14-43" aria-hidden="true" tabindex="-1"></a>Finalmente, la **tasa de participación** se define:</span>
+<span id="cb14-44"><a href="#cb14-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-45"><a href="#cb14-45" aria-hidden="true" tabindex="-1"></a>$$ \text{tasa de participación}= \frac{\text{total de personas ocupadas+total de personas desocupadas}}{\text{total de personas en edad de trabajar (15 años de edad o más)}} \cdot 100\% $$</span>
+<span id="cb14-46"><a href="#cb14-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-47"><a href="#cb14-47" aria-hidden="true" tabindex="-1"></a><span class="fu"># Carga y Preparación de los datos</span></span>
+<span id="cb14-48"><a href="#cb14-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-49"><a href="#cb14-49" aria-hidden="true" tabindex="-1"></a>Se utilizará la base de datos de personas del censo 2024, que en diciembre de 2025 se publicó a nivel de comuna.</span>
+<span id="cb14-50"><a href="#cb14-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-51"><a href="#cb14-51" aria-hidden="true" tabindex="-1"></a>El Manual de uso de la base de datos, el archivo csv y el diccionario de variables se descargan en el siguiente <span class="co">[</span><span class="ot">Enlace</span><span class="co">](https://censo2024.ine.gob.cl/resultados/ "pinche aquí")</span> (Se debe ir a descargar microdato Personas Censo 2024 (csv), descomprimirlo y pegarlo en la carpeta datos del proyecto, para que ejecutar correctamente el código).</span>
+<span id="cb14-52"><a href="#cb14-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-53"><a href="#cb14-53" aria-hidden="true" tabindex="-1"></a><span class="fu">## Carga de paquetes</span></span>
+<span id="cb14-54"><a href="#cb14-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-55"><a href="#cb14-55" aria-hidden="true" tabindex="-1"></a>Los paquetes que se utilizarán se cargan a continuación</span>
+<span id="cb14-56"><a href="#cb14-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-59"><a href="#cb14-59" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb14-60"><a href="#cb14-60" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(<span class="st">"arrow"</span>)){<span class="fu">install.packages</span>(<span class="st">"arrow"</span>)}      <span class="do">### Se utiliza el paquete arrow como lo recomienda el manual</span></span>
+<span id="cb14-61"><a href="#cb14-61" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(<span class="st">"dplyr"</span>)){<span class="fu">install.packages</span>(<span class="st">"dplyr"</span>)}      <span class="do">### Manipulación de datos, filter(), select(), mutate(), etc</span></span>
+<span id="cb14-62"><a href="#cb14-62" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(<span class="st">"purrr"</span>)){<span class="fu">install.packages</span>(<span class="st">"purrr"</span>)}      <span class="do">### iteraciones de funciones sobre listas, vectorses, df, etc.</span></span>
+<span id="cb14-63"><a href="#cb14-63" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(<span class="st">"tidyr"</span>)){<span class="fu">install.packages</span>(<span class="st">"tidyr"</span>)}        <span class="do">###  ordenar y reestructurar datos, pivot_longer(), pivot_wider(), etc.</span></span>
+<span id="cb14-64"><a href="#cb14-64" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(<span class="st">"ggplot2"</span>)){<span class="fu">install.packages</span>(<span class="st">"ggplot2"</span>)}      <span class="do">### Graficos </span></span>
+<span id="cb14-65"><a href="#cb14-65" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(<span class="st">"here"</span>)){<span class="fu">install.packages</span>(<span class="st">"here"</span>)}  <span class="do">###para trabajar mejor con las rutas</span></span>
+<span id="cb14-66"><a href="#cb14-66" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-67"><a href="#cb14-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-68"><a href="#cb14-68" aria-hidden="true" tabindex="-1"></a><span class="fu">## Carga de datos</span></span>
+<span id="cb14-69"><a href="#cb14-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-70"><a href="#cb14-70" aria-hidden="true" tabindex="-1"></a>Según el manual de uso de microdatos, se utilizará el paquete <span class="in">`arrow`</span> , que brinda mayor eficiencia para usar archivos de gran tamaño. Primero se prepara un elemento llamado <span class="in">`schema`</span>, con las características de las variables y posteriormente se abre el archivo csv, y las variables de interés, se colectan a través de la función <span class="in">`collect()`</span>, pudiendo usarse la sintaxis de <span class="in">`dplyr`</span>.</span>
+<span id="cb14-71"><a href="#cb14-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-74"><a href="#cb14-74" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb14-75"><a href="#cb14-75" aria-hidden="true" tabindex="-1"></a>personas_censo2024_schema <span class="ot">&lt;-</span> <span class="fu">schema</span>(   <span class="do">### Esquema de la tabla persona especificado en el punto 7.1.4.3. del manual.</span></span>
+<span id="cb14-76"><a href="#cb14-76" aria-hidden="true" tabindex="-1"></a>  <span class="at">id_vivienda=</span><span class="fu">int64</span>(),</span>
+<span id="cb14-77"><a href="#cb14-77" aria-hidden="true" tabindex="-1"></a>  <span class="at">id_hogar =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-78"><a href="#cb14-78" aria-hidden="true" tabindex="-1"></a>  <span class="at">id_persona =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-79"><a href="#cb14-79" aria-hidden="true" tabindex="-1"></a>  <span class="at">region =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-80"><a href="#cb14-80" aria-hidden="true" tabindex="-1"></a>  <span class="at">provincia =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-81"><a href="#cb14-81" aria-hidden="true" tabindex="-1"></a>  <span class="at">comuna =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-82"><a href="#cb14-82" aria-hidden="true" tabindex="-1"></a>  <span class="at">comuna_bajo_umbral =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-83"><a href="#cb14-83" aria-hidden="true" tabindex="-1"></a>  <span class="at">area =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-84"><a href="#cb14-84" aria-hidden="true" tabindex="-1"></a>  <span class="at">tipo_operativo =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-85"><a href="#cb14-85" aria-hidden="true" tabindex="-1"></a>  <span class="at">sexo =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-86"><a href="#cb14-86" aria-hidden="true" tabindex="-1"></a>  <span class="at">edad =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-87"><a href="#cb14-87" aria-hidden="true" tabindex="-1"></a>  <span class="at">edad_quinquenal =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-88"><a href="#cb14-88" aria-hidden="true" tabindex="-1"></a>  <span class="at">parentesco =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-89"><a href="#cb14-89" aria-hidden="true" tabindex="-1"></a>  <span class="at">p23_est_civil =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-90"><a href="#cb14-90" aria-hidden="true" tabindex="-1"></a>  <span class="at">p24_lug_resid5 =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-91"><a href="#cb14-91" aria-hidden="true" tabindex="-1"></a>  <span class="at">p24_lug_resid5_esp =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-92"><a href="#cb14-92" aria-hidden="true" tabindex="-1"></a>  <span class="at">p25_lug_nacimiento =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-93"><a href="#cb14-93" aria-hidden="true" tabindex="-1"></a>  <span class="at">p25_lug_nacimiento_rec =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-94"><a href="#cb14-94" aria-hidden="true" tabindex="-1"></a>  <span class="at">p25_lug_nacimiento_esp =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-95"><a href="#cb14-95" aria-hidden="true" tabindex="-1"></a>  <span class="at">p26_llegada_periodo =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-96"><a href="#cb14-96" aria-hidden="true" tabindex="-1"></a>  <span class="at">p27_nacionalidad =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-97"><a href="#cb14-97" aria-hidden="true" tabindex="-1"></a>  <span class="at">p27_nacionalidad_esp =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-98"><a href="#cb14-98" aria-hidden="true" tabindex="-1"></a>  <span class="at">p27_nacionalidad_rec =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-99"><a href="#cb14-99" aria-hidden="true" tabindex="-1"></a>  <span class="at">p28_autoid_pueblo =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-100"><a href="#cb14-100" aria-hidden="true" tabindex="-1"></a>  <span class="at">p28_pueblo_pert =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-101"><a href="#cb14-101" aria-hidden="true" tabindex="-1"></a>  <span class="at">p29_afrodescendencia_rec =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-102"><a href="#cb14-102" aria-hidden="true" tabindex="-1"></a>  <span class="at">p29_afrodescendencia =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-103"><a href="#cb14-103" aria-hidden="true" tabindex="-1"></a>  <span class="at">p30_lengua_indigena =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-104"><a href="#cb14-104" aria-hidden="true" tabindex="-1"></a>  <span class="at">p30_lengua_indigena_rec =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-105"><a href="#cb14-105" aria-hidden="true" tabindex="-1"></a>  <span class="at">p31_religion =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-106"><a href="#cb14-106" aria-hidden="true" tabindex="-1"></a>  <span class="at">p31_religion_rec =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-107"><a href="#cb14-107" aria-hidden="true" tabindex="-1"></a>  <span class="at">p32a_dificultad_ver =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-108"><a href="#cb14-108" aria-hidden="true" tabindex="-1"></a>  <span class="at">p32b_dificultad_oir =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-109"><a href="#cb14-109" aria-hidden="true" tabindex="-1"></a>  <span class="at">p32c_dificultad_mover =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-110"><a href="#cb14-110" aria-hidden="true" tabindex="-1"></a>  <span class="at">p32d_dificultad_cogni =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-111"><a href="#cb14-111" aria-hidden="true" tabindex="-1"></a>  <span class="at">p32e_dificultad_cuidado =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-112"><a href="#cb14-112" aria-hidden="true" tabindex="-1"></a>  <span class="at">p32f_dificultad_comunic =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-113"><a href="#cb14-113" aria-hidden="true" tabindex="-1"></a>  <span class="at">discapacidad =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-114"><a href="#cb14-114" aria-hidden="true" tabindex="-1"></a>  <span class="at">p33_edu_asiste =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-115"><a href="#cb14-115" aria-hidden="true" tabindex="-1"></a>  <span class="at">asistencia_parv =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-116"><a href="#cb14-116" aria-hidden="true" tabindex="-1"></a>  <span class="at">asistencia_basica =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-117"><a href="#cb14-117" aria-hidden="true" tabindex="-1"></a>  <span class="at">asistencia_media =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-118"><a href="#cb14-118" aria-hidden="true" tabindex="-1"></a>  <span class="at">asistencia_superior =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-119"><a href="#cb14-119" aria-hidden="true" tabindex="-1"></a>  <span class="at">p37_alfabet =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-120"><a href="#cb14-120" aria-hidden="true" tabindex="-1"></a>  <span class="at">escolaridad =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-121"><a href="#cb14-121" aria-hidden="true" tabindex="-1"></a>  <span class="at">cine11 =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-122"><a href="#cb14-122" aria-hidden="true" tabindex="-1"></a>  <span class="at">sit_fuerza_trabajo =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-123"><a href="#cb14-123" aria-hidden="true" tabindex="-1"></a>  <span class="at">p40_cise_rec =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-124"><a href="#cb14-124" aria-hidden="true" tabindex="-1"></a>  <span class="at">depend_econ_deficit_hab =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-125"><a href="#cb14-125" aria-hidden="true" tabindex="-1"></a>  <span class="at">cod_ciuo =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-126"><a href="#cb14-126" aria-hidden="true" tabindex="-1"></a>  <span class="at">cod_caenes =</span> <span class="fu">string</span>(),</span>
+<span id="cb14-127"><a href="#cb14-127" aria-hidden="true" tabindex="-1"></a>  <span class="at">p44_lug_trab =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-128"><a href="#cb14-128" aria-hidden="true" tabindex="-1"></a>  <span class="at">p44_lug_trab_esp =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-129"><a href="#cb14-129" aria-hidden="true" tabindex="-1"></a>  <span class="at">p45_medio_transporte =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-130"><a href="#cb14-130" aria-hidden="true" tabindex="-1"></a>  <span class="at">p46a_tot_hijs_nac =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-131"><a href="#cb14-131" aria-hidden="true" tabindex="-1"></a>  <span class="at">p46b_hijas_nac =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-132"><a href="#cb14-132" aria-hidden="true" tabindex="-1"></a>  <span class="at">p46c_hijos_nac =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-133"><a href="#cb14-133" aria-hidden="true" tabindex="-1"></a>  <span class="at">p47a_tot_hijs_sobrev =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-134"><a href="#cb14-134" aria-hidden="true" tabindex="-1"></a>  <span class="at">p47b_hijas_sobrev =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-135"><a href="#cb14-135" aria-hidden="true" tabindex="-1"></a>  <span class="at">p47c_hijos_sobrev =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-136"><a href="#cb14-136" aria-hidden="true" tabindex="-1"></a>  <span class="at">p48_anio_nac_uh =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-137"><a href="#cb14-137" aria-hidden="true" tabindex="-1"></a>  <span class="at">p48_mes_nac_uh =</span> <span class="fu">int64</span>(),</span>
+<span id="cb14-138"><a href="#cb14-138" aria-hidden="true" tabindex="-1"></a>  <span class="at">div_genero =</span> <span class="fu">int64</span>()</span>
+<span id="cb14-139"><a href="#cb14-139" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-140"><a href="#cb14-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-141"><a href="#cb14-141" aria-hidden="true" tabindex="-1"></a>personas_censo2024 <span class="ot">&lt;-</span><span class="fu">open_dataset</span>(<span class="fu">here</span>(<span class="st">"datos/personas_censo2024.csv"</span>),     <span class="do">### permite leer datos muy pesados en formato "lazy", para no utilizar toda la memoria</span></span>
+<span id="cb14-142"><a href="#cb14-142" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">format =</span> <span class="st">"csv"</span>, <span class="at">delim =</span> <span class="st">";"</span>, <span class="at">schema =</span> personas_censo2024_schema, <span class="at">skip =</span> <span class="dv">1</span>)</span>
+<span id="cb14-143"><a href="#cb14-143" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-144"><a href="#cb14-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-145"><a href="#cb14-145" aria-hidden="true" tabindex="-1"></a>region <span class="ot">&lt;-</span> personas_censo2024 <span class="sc">%&gt;%</span>    </span>
+<span id="cb14-146"><a href="#cb14-146" aria-hidden="true" tabindex="-1"></a>        <span class="fu">filter</span>(region<span class="sc">==</span><span class="dv">8</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb14-147"><a href="#cb14-147" aria-hidden="true" tabindex="-1"></a>        <span class="fu">select</span>(comuna, area,sit_fuerza_trabajo,edad, sexo, cod_caenes, p44_lug_trab ) <span class="sc">%&gt;%</span>  <span class="do">### se seleccionan algunas variables con las que se trabajaran</span></span>
+<span id="cb14-148"><a href="#cb14-148" aria-hidden="true" tabindex="-1"></a>        <span class="fu">collect</span>()</span>
+<span id="cb14-149"><a href="#cb14-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-150"><a href="#cb14-150" aria-hidden="true" tabindex="-1"></a>region2 <span class="ot">&lt;-</span> region <span class="sc">%&gt;%</span> <span class="do">#### se agregan los labels segun los levels para que se entienda de mejor forma para el lector, que vea datos y no solo numeros</span></span>
+<span id="cb14-151"><a href="#cb14-151" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb14-152"><a href="#cb14-152" aria-hidden="true" tabindex="-1"></a>    <span class="at">area =</span> <span class="fu">factor</span>(area,</span>
+<span id="cb14-153"><a href="#cb14-153" aria-hidden="true" tabindex="-1"></a>                  <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>),</span>
+<span id="cb14-154"><a href="#cb14-154" aria-hidden="true" tabindex="-1"></a>                  <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Urbano"</span>, <span class="st">"Rural"</span>)),</span>
+<span id="cb14-155"><a href="#cb14-155" aria-hidden="true" tabindex="-1"></a>    <span class="at">sexo =</span> <span class="fu">factor</span>(sexo,</span>
+<span id="cb14-156"><a href="#cb14-156" aria-hidden="true" tabindex="-1"></a>                  <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>),</span>
+<span id="cb14-157"><a href="#cb14-157" aria-hidden="true" tabindex="-1"></a>                  <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Hombres"</span>, <span class="st">"Mujeres"</span>)),</span>
+<span id="cb14-158"><a href="#cb14-158" aria-hidden="true" tabindex="-1"></a>    <span class="at">sit_fuerza_trabajo =</span> <span class="fu">factor</span>(sit_fuerza_trabajo,</span>
+<span id="cb14-159"><a href="#cb14-159" aria-hidden="true" tabindex="-1"></a>                                <span class="at">levels =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">99</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>),</span>
+<span id="cb14-160"><a href="#cb14-160" aria-hidden="true" tabindex="-1"></a>                                <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"No responde"</span>, </span>
+<span id="cb14-161"><a href="#cb14-161" aria-hidden="true" tabindex="-1"></a>                                           <span class="st">"Ocupado"</span>, </span>
+<span id="cb14-162"><a href="#cb14-162" aria-hidden="true" tabindex="-1"></a>                                           <span class="st">"Desocupado"</span>,</span>
+<span id="cb14-163"><a href="#cb14-163" aria-hidden="true" tabindex="-1"></a>                                           <span class="st">"Fuera de la fuerza de trabajo"</span>)),</span>
+<span id="cb14-164"><a href="#cb14-164" aria-hidden="true" tabindex="-1"></a>    <span class="at">p44_lug_trab =</span> <span class="fu">factor</span>(p44_lug_trab,</span>
+<span id="cb14-165"><a href="#cb14-165" aria-hidden="true" tabindex="-1"></a>                          <span class="at">levels =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">99</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>),</span>
+<span id="cb14-166"><a href="#cb14-166" aria-hidden="true" tabindex="-1"></a>                          <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"No responde"</span>, </span>
+<span id="cb14-167"><a href="#cb14-167" aria-hidden="true" tabindex="-1"></a>                                     <span class="st">"En su comuna, en la vivienda"</span>, </span>
+<span id="cb14-168"><a href="#cb14-168" aria-hidden="true" tabindex="-1"></a>                                     <span class="st">"En su comuna, fuera de la vivienda"</span>,</span>
+<span id="cb14-169"><a href="#cb14-169" aria-hidden="true" tabindex="-1"></a>                                     <span class="st">"En otra comuna"</span>,</span>
+<span id="cb14-170"><a href="#cb14-170" aria-hidden="true" tabindex="-1"></a>                                     <span class="st">"En otro país"</span>,</span>
+<span id="cb14-171"><a href="#cb14-171" aria-hidden="true" tabindex="-1"></a>                                     <span class="st">"Varias comunas o países"</span>))</span>
+<span id="cb14-172"><a href="#cb14-172" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb14-173"><a href="#cb14-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-174"><a href="#cb14-174" aria-hidden="true" tabindex="-1"></a><span class="do">##removemos para ahorrar memoria en una de esas</span></span>
+<span id="cb14-175"><a href="#cb14-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-176"><a href="#cb14-176" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(personas_censo2024, personas_censo2024_schema)</span>
+<span id="cb14-177"><a href="#cb14-177" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-178"><a href="#cb14-178" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-179"><a href="#cb14-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-180"><a href="#cb14-180" aria-hidden="true" tabindex="-1"></a>Entonces, con el tibble region2, ya tiene la información filtrada para la Región del Biobío, con las etiquetas correspondientes. A continuación se presenta, a modo de ejemplo, las ptimeras 10 filas.</span>
+<span id="cb14-181"><a href="#cb14-181" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-184"><a href="#cb14-184" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb14-185"><a href="#cb14-185" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(region2, <span class="dv">10</span>)</span>
+<span id="cb14-186"><a href="#cb14-186" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-187"><a href="#cb14-187" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-188"><a href="#cb14-188" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-189"><a href="#cb14-189" aria-hidden="true" tabindex="-1"></a>A continuación, se crean tablas para personas ocupadas, desocupadas y fuera de la fuerza de trabajo por comuna de la Región del Biobío. Se utilizarán posteriormente para crear gráficos y tablas.</span>
+<span id="cb14-190"><a href="#cb14-190" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-193"><a href="#cb14-193" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb14-194"><a href="#cb14-194" aria-hidden="true" tabindex="-1"></a>ocupados <span class="ot">&lt;-</span> region <span class="sc">%&gt;%</span>             <span class="do">### tabla de ocupados cruda</span></span>
+<span id="cb14-195"><a href="#cb14-195" aria-hidden="true" tabindex="-1"></a>            <span class="fu">filter</span>(sit_fuerza_trabajo<span class="sc">==</span><span class="dv">1</span>) </span>
+<span id="cb14-196"><a href="#cb14-196" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-197"><a href="#cb14-197" aria-hidden="true" tabindex="-1"></a>desocupados <span class="ot">&lt;-</span> region <span class="sc">%&gt;%</span>              <span class="do">### tabla de desocupados cruda</span></span>
+<span id="cb14-198"><a href="#cb14-198" aria-hidden="true" tabindex="-1"></a>            <span class="fu">filter</span>(sit_fuerza_trabajo<span class="sc">==</span><span class="dv">2</span>) </span>
+<span id="cb14-199"><a href="#cb14-199" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-200"><a href="#cb14-200" aria-hidden="true" tabindex="-1"></a>inactivos <span class="ot">&lt;-</span> region <span class="sc">%&gt;%</span>             <span class="do">### tabla de inactivos cruda</span></span>
+<span id="cb14-201"><a href="#cb14-201" aria-hidden="true" tabindex="-1"></a>            <span class="fu">filter</span>(sit_fuerza_trabajo<span class="sc">==</span><span class="dv">3</span>) </span>
+<span id="cb14-202"><a href="#cb14-202" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-203"><a href="#cb14-203" aria-hidden="true" tabindex="-1"></a>menores15 <span class="ot">&lt;-</span> region <span class="sc">%&gt;%</span>            <span class="do">### tabla de menores de 15 años que sirve para la validación de los NA correspondientes</span></span>
+<span id="cb14-204"><a href="#cb14-204" aria-hidden="true" tabindex="-1"></a>            <span class="fu">select</span>(comuna, edad, sexo) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-205"><a href="#cb14-205" aria-hidden="true" tabindex="-1"></a>            <span class="fu">filter</span>(edad<span class="sc">&lt;</span><span class="dv">15</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-206"><a href="#cb14-206" aria-hidden="true" tabindex="-1"></a>            <span class="fu">group_by</span>(comuna) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-207"><a href="#cb14-207" aria-hidden="true" tabindex="-1"></a>            <span class="fu">count</span>(sexo)</span>
+<span id="cb14-208"><a href="#cb14-208" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-209"><a href="#cb14-209" aria-hidden="true" tabindex="-1"></a>sit_fdt_total <span class="ot">&lt;-</span> region <span class="sc">%&gt;%</span>    <span class="do">### tabla de situación de la fuerza de trabajo sin desagregar por sexo</span></span>
+<span id="cb14-210"><a href="#cb14-210" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(sit_fuerza_trabajo)) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-211"><a href="#cb14-211" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">select</span>(comuna, sit_fuerza_trabajo) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-212"><a href="#cb14-212" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">group_by</span>(comuna) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-213"><a href="#cb14-213" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">count</span>(sit_fuerza_trabajo)</span>
+<span id="cb14-214"><a href="#cb14-214" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-215"><a href="#cb14-215" aria-hidden="true" tabindex="-1"></a>sit_fdt <span class="ot">&lt;-</span> region <span class="sc">%&gt;%</span>         <span class="do">### tabla de situación de la fuerza de trabajo desagregada por sexo</span></span>
+<span id="cb14-216"><a href="#cb14-216" aria-hidden="true" tabindex="-1"></a>          <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(sit_fuerza_trabajo)) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-217"><a href="#cb14-217" aria-hidden="true" tabindex="-1"></a>          <span class="fu">select</span>( comuna, sit_fuerza_trabajo, sexo) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-218"><a href="#cb14-218" aria-hidden="true" tabindex="-1"></a>          <span class="fu">group_by</span>(comuna, sit_fuerza_trabajo) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-219"><a href="#cb14-219" aria-hidden="true" tabindex="-1"></a>          <span class="fu">count</span>(sexo)</span>
+<span id="cb14-220"><a href="#cb14-220" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-221"><a href="#cb14-221" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-222"><a href="#cb14-222" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-223"><a href="#cb14-223" aria-hidden="true" tabindex="-1"></a><span class="fu"># Inclusión de funciones</span></span>
+<span id="cb14-224"><a href="#cb14-224" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-225"><a href="#cb14-225" aria-hidden="true" tabindex="-1"></a>El siguiente código llama a un archivo dentro del proyecto en que están creadas algunas funciones útiles.</span>
+<span id="cb14-226"><a href="#cb14-226" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-229"><a href="#cb14-229" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb14-230"><a href="#cb14-230" aria-hidden="true" tabindex="-1"></a> <span class="fu">source</span>( <span class="fu">here</span>(<span class="st">"scripts/functions.R"</span>))   </span>
+<span id="cb14-231"><a href="#cb14-231" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-232"><a href="#cb14-232" aria-hidden="true" tabindex="-1"></a><span class="do">#### se llama al script adicional de funciones, agregar que no son funcniones totalmente genéricas y que dependen de los resultados obtenidos antes en este mismo script</span></span>
+<span id="cb14-233"><a href="#cb14-233" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-234"><a href="#cb14-234" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-235"><a href="#cb14-235" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-236"><a href="#cb14-236" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resultados</span></span>
+<span id="cb14-237"><a href="#cb14-237" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-238"><a href="#cb14-238" aria-hidden="true" tabindex="-1"></a>Es importante señalar que los cálculos que se realizan son en función de las personas que respondieron a las preguntas de situación laboral, es decir, se considerará como población en edad de trabajar a las personas de 15 años o más de edad y que hayan respondido efectivamente estas preguntas.</span>
+<span id="cb14-239"><a href="#cb14-239" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-240"><a href="#cb14-240" aria-hidden="true" tabindex="-1"></a>Para efectos de comparación, a continuación se presentan los indicadores para la Región del Biobío, para Ambos sexos, hombres y mujeres.</span>
+<span id="cb14-241"><a href="#cb14-241" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-244"><a href="#cb14-244" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb14-245"><a href="#cb14-245" aria-hidden="true" tabindex="-1"></a>resultados_region<span class="ot">&lt;-</span>region2 <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(sit_fuerza_trabajo, sexo) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">Total=</span><span class="fu">n</span>())</span>
+<span id="cb14-246"><a href="#cb14-246" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-247"><a href="#cb14-247" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-248"><a href="#cb14-248" aria-hidden="true" tabindex="-1"></a><span class="do">##Hombres</span></span>
+<span id="cb14-249"><a href="#cb14-249" aria-hidden="true" tabindex="-1"></a>resultados_region_h<span class="ot">&lt;-</span><span class="fu">filter</span>(resultados_region, sexo<span class="sc">==</span><span class="st">"Hombres"</span>)</span>
+<span id="cb14-250"><a href="#cb14-250" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-251"><a href="#cb14-251" aria-hidden="true" tabindex="-1"></a>resultados_region_h<span class="ot">&lt;-</span><span class="fu">pivot_wider</span>(resultados_region_h, <span class="at">names_from =</span>sit_fuerza_trabajo, <span class="at">values_from =</span> Total)</span>
+<span id="cb14-252"><a href="#cb14-252" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-253"><a href="#cb14-253" aria-hidden="true" tabindex="-1"></a>resultados_region_h<span class="sc">$</span>td<span class="ot">&lt;-</span>resultados_region_h<span class="sc">$</span>Desocupado<span class="sc">/</span>(resultados_region_h<span class="sc">$</span>Desocupado<span class="sc">+</span>resultados_region_h<span class="sc">$</span>Ocupado)<span class="sc">*</span><span class="dv">100</span></span>
+<span id="cb14-254"><a href="#cb14-254" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-255"><a href="#cb14-255" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-256"><a href="#cb14-256" aria-hidden="true" tabindex="-1"></a>resultados_region_h<span class="sc">$</span>to<span class="ot">&lt;-</span>resultados_region_h<span class="sc">$</span>Ocupado <span class="sc">/</span>(resultados_region_h<span class="sc">$</span>Desocupado<span class="sc">+</span>resultados_region_h<span class="sc">$</span>Ocupado<span class="sc">+</span>resultados_region_h<span class="sc">$</span><span class="st">`</span><span class="at">Fuera de la fuerza de trabajo</span><span class="st">`</span>)<span class="sc">*</span><span class="dv">100</span></span>
+<span id="cb14-257"><a href="#cb14-257" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-258"><a href="#cb14-258" aria-hidden="true" tabindex="-1"></a>resultados_region_h<span class="sc">$</span>tp<span class="ot">&lt;-</span>(resultados_region_h<span class="sc">$</span>Desocupado<span class="sc">+</span>resultados_region_h<span class="sc">$</span>Ocupado) <span class="sc">/</span>(resultados_region_h<span class="sc">$</span>Desocupado<span class="sc">+</span>resultados_region_h<span class="sc">$</span>Ocupado<span class="sc">+</span>resultados_region_h<span class="sc">$</span><span class="st">`</span><span class="at">Fuera de la fuerza de trabajo</span><span class="st">`</span>)<span class="sc">*</span><span class="dv">100</span></span>
+<span id="cb14-259"><a href="#cb14-259" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-260"><a href="#cb14-260" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-261"><a href="#cb14-261" aria-hidden="true" tabindex="-1"></a><span class="do">##Mujeres</span></span>
+<span id="cb14-262"><a href="#cb14-262" aria-hidden="true" tabindex="-1"></a>resultados_region_m<span class="ot">&lt;-</span><span class="fu">filter</span>(resultados_region, sexo<span class="sc">==</span><span class="st">"Mujeres"</span>)</span>
+<span id="cb14-263"><a href="#cb14-263" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-264"><a href="#cb14-264" aria-hidden="true" tabindex="-1"></a>resultados_region_m<span class="ot">&lt;-</span><span class="fu">pivot_wider</span>(resultados_region_m, <span class="at">names_from =</span>sit_fuerza_trabajo, <span class="at">values_from =</span> Total)</span>
+<span id="cb14-265"><a href="#cb14-265" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-266"><a href="#cb14-266" aria-hidden="true" tabindex="-1"></a>resultados_region_m<span class="sc">$</span>td<span class="ot">&lt;-</span>resultados_region_m<span class="sc">$</span>Desocupado<span class="sc">/</span>(resultados_region_m<span class="sc">$</span>Desocupado<span class="sc">+</span>resultados_region_m<span class="sc">$</span>Ocupado)<span class="sc">*</span><span class="dv">100</span></span>
+<span id="cb14-267"><a href="#cb14-267" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-268"><a href="#cb14-268" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-269"><a href="#cb14-269" aria-hidden="true" tabindex="-1"></a>resultados_region_m<span class="sc">$</span>to<span class="ot">&lt;-</span>resultados_region_m<span class="sc">$</span>Ocupado <span class="sc">/</span>(resultados_region_m<span class="sc">$</span>Desocupado<span class="sc">+</span>resultados_region_m<span class="sc">$</span>Ocupado<span class="sc">+</span>resultados_region_m<span class="sc">$</span><span class="st">`</span><span class="at">Fuera de la fuerza de trabajo</span><span class="st">`</span>)<span class="sc">*</span><span class="dv">100</span></span>
+<span id="cb14-270"><a href="#cb14-270" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-271"><a href="#cb14-271" aria-hidden="true" tabindex="-1"></a>resultados_region_m<span class="sc">$</span>tp<span class="ot">&lt;-</span>(resultados_region_m<span class="sc">$</span>Desocupado<span class="sc">+</span>resultados_region_m<span class="sc">$</span>Ocupado) <span class="sc">/</span>(resultados_region_m<span class="sc">$</span>Desocupado<span class="sc">+</span>resultados_region_m<span class="sc">$</span>Ocupado<span class="sc">+</span>resultados_region_m<span class="sc">$</span><span class="st">`</span><span class="at">Fuera de la fuerza de trabajo</span><span class="st">`</span>)<span class="sc">*</span><span class="dv">100</span></span>
+<span id="cb14-272"><a href="#cb14-272" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-273"><a href="#cb14-273" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-274"><a href="#cb14-274" aria-hidden="true" tabindex="-1"></a><span class="do">##Ambos Sexos</span></span>
+<span id="cb14-275"><a href="#cb14-275" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-276"><a href="#cb14-276" aria-hidden="true" tabindex="-1"></a>resultados_resumen <span class="ot">&lt;-</span> resultados_region <span class="sc">%&gt;%</span> </span>
+<span id="cb14-277"><a href="#cb14-277" aria-hidden="true" tabindex="-1"></a>                      <span class="fu">group_by</span>(sit_fuerza_trabajo ) <span class="sc">%&gt;%</span></span>
+<span id="cb14-278"><a href="#cb14-278" aria-hidden="true" tabindex="-1"></a>                      <span class="fu">summarise</span>(<span class="at">Total=</span><span class="fu">sum</span>(Total))</span>
+<span id="cb14-279"><a href="#cb14-279" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-280"><a href="#cb14-280" aria-hidden="true" tabindex="-1"></a>td_reg<span class="ot">&lt;-</span>resultados_resumen<span class="sc">$</span>Total[<span class="dv">3</span>]<span class="sc">/</span>(resultados_resumen<span class="sc">$</span>Total[<span class="dv">2</span>]<span class="sc">+</span>resultados_resumen<span class="sc">$</span>Total[<span class="dv">3</span>])<span class="sc">*</span><span class="dv">100</span></span>
+<span id="cb14-281"><a href="#cb14-281" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-282"><a href="#cb14-282" aria-hidden="true" tabindex="-1"></a>to_reg<span class="ot">&lt;-</span>resultados_resumen<span class="sc">$</span>Total[<span class="dv">2</span>]<span class="sc">/</span>(resultados_resumen<span class="sc">$</span>Total[<span class="dv">2</span>]<span class="sc">+</span>resultados_resumen<span class="sc">$</span>Total[<span class="dv">3</span>]<span class="sc">+</span>resultados_resumen<span class="sc">$</span>Total[<span class="dv">4</span>])<span class="sc">*</span><span class="dv">100</span></span>
+<span id="cb14-283"><a href="#cb14-283" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-284"><a href="#cb14-284" aria-hidden="true" tabindex="-1"></a>tp_reg<span class="ot">&lt;-</span>(resultados_resumen<span class="sc">$</span>Total[<span class="dv">2</span>]<span class="sc">+</span>resultados_resumen<span class="sc">$</span>Total[<span class="dv">3</span>])<span class="sc">/</span>(resultados_resumen<span class="sc">$</span>Total[<span class="dv">2</span>]<span class="sc">+</span>resultados_resumen<span class="sc">$</span>Total[<span class="dv">3</span>]<span class="sc">+</span>resultados_resumen<span class="sc">$</span>Total[<span class="dv">4</span>])<span class="sc">*</span><span class="dv">100</span></span>
+<span id="cb14-285"><a href="#cb14-285" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-286"><a href="#cb14-286" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-287"><a href="#cb14-287" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-288"><a href="#cb14-288" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Tasa de desocupación**</span>
+<span id="cb14-289"><a href="#cb14-289" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-290"><a href="#cb14-290" aria-hidden="true" tabindex="-1"></a>    Ambos sexos: `<span class="in">` `</span>r round(td_reg,1) ` `` %</span>
+<span id="cb14-291"><a href="#cb14-291" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-292"><a href="#cb14-292" aria-hidden="true" tabindex="-1"></a>    Hombres: `<span class="in">` `</span>r round(resultados_region_h$td<span class="co">[</span><span class="ot">1</span><span class="co">]</span>,1) ` `` %</span>
+<span id="cb14-293"><a href="#cb14-293" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-294"><a href="#cb14-294" aria-hidden="true" tabindex="-1"></a>    Mujeres: `<span class="in">` `</span>r round(resultados_region_m$td<span class="co">[</span><span class="ot">1</span><span class="co">]</span>,1) ` `` %</span>
+<span id="cb14-295"><a href="#cb14-295" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-296"><a href="#cb14-296" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Tasa de Ocupación**</span>
+<span id="cb14-297"><a href="#cb14-297" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-298"><a href="#cb14-298" aria-hidden="true" tabindex="-1"></a>    Ambos sexos: `<span class="in">` `</span>r round(to_reg,1) ` `` %</span>
+<span id="cb14-299"><a href="#cb14-299" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-300"><a href="#cb14-300" aria-hidden="true" tabindex="-1"></a>    Hombres: `<span class="in">` `</span>r round(resultados_region_h$to<span class="co">[</span><span class="ot">1</span><span class="co">]</span>,1) ` `` %</span>
+<span id="cb14-301"><a href="#cb14-301" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-302"><a href="#cb14-302" aria-hidden="true" tabindex="-1"></a>    Mujeres: `<span class="in">` `</span>r round(resultados_region_m$to<span class="co">[</span><span class="ot">1</span><span class="co">]</span>,1) ` `` %</span>
+<span id="cb14-303"><a href="#cb14-303" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-304"><a href="#cb14-304" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Tasa de Participación**</span>
+<span id="cb14-305"><a href="#cb14-305" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-306"><a href="#cb14-306" aria-hidden="true" tabindex="-1"></a>    Ambos sexos: `<span class="in">` `</span>r round(tp_reg,1) ` `` %</span>
+<span id="cb14-307"><a href="#cb14-307" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-308"><a href="#cb14-308" aria-hidden="true" tabindex="-1"></a>    Hombres: `<span class="in">` `</span>r round(resultados_region_h$tp<span class="co">[</span><span class="ot">1</span><span class="co">]</span>,1) ` `` %</span>
+<span id="cb14-309"><a href="#cb14-309" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-310"><a href="#cb14-310" aria-hidden="true" tabindex="-1"></a>    Mujeres: `<span class="in">` `</span>r round(resultados_region_m$tp<span class="co">[</span><span class="ot">1</span><span class="co">]</span>,1) ` `` %</span>
+<span id="cb14-311"><a href="#cb14-311" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-312"><a href="#cb14-312" aria-hidden="true" tabindex="-1"></a>A partir de los resultados anteriores, se aprecian brechas entre hombres y mujeres, que también se observan en los resultados de la Encuesta Nacional de Empleo, las bajas tasas de ocupación y participación de las mujeres, comparado con los hombres.</span>
+<span id="cb14-313"><a href="#cb14-313" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-314"><a href="#cb14-314" aria-hidden="true" tabindex="-1"></a><span class="fu">## Tasa de desocupación a nivel comunal</span></span>
+<span id="cb14-315"><a href="#cb14-315" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-318"><a href="#cb14-318" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb14-319"><a href="#cb14-319" aria-hidden="true" tabindex="-1"></a>codigos <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">unique</span>(region2<span class="sc">$</span>comuna))   <span class="do">#### Para la uilizacion de la función map y derivados se necesita un orden que se obtienen a traves de estos codigos</span></span>
+<span id="cb14-320"><a href="#cb14-320" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-321"><a href="#cb14-321" aria-hidden="true" tabindex="-1"></a>df_d <span class="ot">&lt;-</span> <span class="fu">map_df</span>(codigos, tasa_desocupacion) <span class="sc">%&gt;%</span>   <span class="do">### La función map_df itera una funcion sobre una lista de datos y los apila</span></span>
+<span id="cb14-322"><a href="#cb14-322" aria-hidden="true" tabindex="-1"></a>        <span class="fu">nombres_comuna</span>(.) <span class="sc">%&gt;%</span>             </span>
+<span id="cb14-323"><a href="#cb14-323" aria-hidden="true" tabindex="-1"></a>        <span class="fu">pivot</span>(.)</span>
+<span id="cb14-324"><a href="#cb14-324" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-325"><a href="#cb14-325" aria-hidden="true" tabindex="-1"></a>df_o <span class="ot">&lt;-</span> <span class="fu">map_df</span>(codigos, tasa_ocupacion) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-326"><a href="#cb14-326" aria-hidden="true" tabindex="-1"></a>        <span class="fu">nombres_comuna</span>(.) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-327"><a href="#cb14-327" aria-hidden="true" tabindex="-1"></a>        <span class="fu">pivot</span>(.)</span>
+<span id="cb14-328"><a href="#cb14-328" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-329"><a href="#cb14-329" aria-hidden="true" tabindex="-1"></a>df_p <span class="ot">&lt;-</span> <span class="fu">map_df</span>(codigos, tasa_participacion) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-330"><a href="#cb14-330" aria-hidden="true" tabindex="-1"></a>        <span class="fu">nombres_comuna</span>(.) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-331"><a href="#cb14-331" aria-hidden="true" tabindex="-1"></a>        <span class="fu">pivot</span>(.)</span>
+<span id="cb14-332"><a href="#cb14-332" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-333"><a href="#cb14-333" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-334"><a href="#cb14-334" aria-hidden="true" tabindex="-1"></a>grafico_tasas_desocupacion <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df_d, <span class="fu">aes</span>(<span class="at">x =</span> comuna, <span class="at">y =</span> tasa, <span class="at">fill =</span> grupo)) <span class="sc">+</span></span>
+<span id="cb14-335"><a href="#cb14-335" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="fu">position_dodge</span>()) <span class="sc">+</span></span>
+<span id="cb14-336"><a href="#cb14-336" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Tasa de Desocupación por Comuna"</span>,</span>
+<span id="cb14-337"><a href="#cb14-337" aria-hidden="true" tabindex="-1"></a>                              <span class="at">x =</span> <span class="st">"Comuna"</span>,</span>
+<span id="cb14-338"><a href="#cb14-338" aria-hidden="true" tabindex="-1"></a>                              <span class="at">y =</span> <span class="st">"Tasa (%)"</span>,</span>
+<span id="cb14-339"><a href="#cb14-339" aria-hidden="true" tabindex="-1"></a>                              <span class="at">fill =</span> <span class="st">"Grupo"</span>) <span class="sc">+</span></span>
+<span id="cb14-340"><a href="#cb14-340" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb14-341"><a href="#cb14-341" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span>
+<span id="cb14-342"><a href="#cb14-342" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-343"><a href="#cb14-343" aria-hidden="true" tabindex="-1"></a>grafico_tasas_desocupacion</span>
+<span id="cb14-344"><a href="#cb14-344" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-345"><a href="#cb14-345" aria-hidden="true" tabindex="-1"></a>df_dc<span class="ot">&lt;-</span><span class="fu">filter</span>(df_d, grupo<span class="sc">==</span><span class="st">"Total"</span> )</span>
+<span id="cb14-346"><a href="#cb14-346" aria-hidden="true" tabindex="-1"></a>df_dc<span class="ot">&lt;-</span><span class="fu">arrange</span>(df_dc,<span class="sc">-</span>tasa )</span>
+<span id="cb14-347"><a href="#cb14-347" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-348"><a href="#cb14-348" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-349"><a href="#cb14-349" aria-hidden="true" tabindex="-1"></a>La comuna con mayor tasa de desocupación es <span class="in">`r df_dc$comuna[1]`</span> con <span class="in">`r round(df_dc$tasa[1],1)`</span> %, mientras que la menor tasa de desocupación se registró en <span class="in">`r df_dc$comuna[nrow(df_dc)]`</span> con <span class="in">`r round(df_dc$tasa[nrow(df_dc)],1)`</span> %.</span>
+<span id="cb14-350"><a href="#cb14-350" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-351"><a href="#cb14-351" aria-hidden="true" tabindex="-1"></a><span class="fu">## Tasa de ocupación a nivel comunal</span></span>
+<span id="cb14-352"><a href="#cb14-352" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-355"><a href="#cb14-355" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb14-356"><a href="#cb14-356" aria-hidden="true" tabindex="-1"></a>grafico_tasas_ocupacion <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df_o, <span class="fu">aes</span>(<span class="at">x =</span> comuna, <span class="at">y =</span> tasa, <span class="at">fill =</span> grupo)) <span class="sc">+</span></span>
+<span id="cb14-357"><a href="#cb14-357" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="fu">position_dodge</span>()) <span class="sc">+</span></span>
+<span id="cb14-358"><a href="#cb14-358" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Tasa de Ocupación por Comuna"</span>,</span>
+<span id="cb14-359"><a href="#cb14-359" aria-hidden="true" tabindex="-1"></a>                           <span class="at">x =</span> <span class="st">"Comuna"</span>,</span>
+<span id="cb14-360"><a href="#cb14-360" aria-hidden="true" tabindex="-1"></a>                           <span class="at">y =</span> <span class="st">"Tasa (%)"</span>,</span>
+<span id="cb14-361"><a href="#cb14-361" aria-hidden="true" tabindex="-1"></a>                           <span class="at">fill =</span> <span class="st">"Grupo"</span>) <span class="sc">+</span></span>
+<span id="cb14-362"><a href="#cb14-362" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb14-363"><a href="#cb14-363" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span>
+<span id="cb14-364"><a href="#cb14-364" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-365"><a href="#cb14-365" aria-hidden="true" tabindex="-1"></a>grafico_tasas_ocupacion</span>
+<span id="cb14-366"><a href="#cb14-366" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-367"><a href="#cb14-367" aria-hidden="true" tabindex="-1"></a>df_oc<span class="ot">&lt;-</span><span class="fu">filter</span>(df_o, grupo<span class="sc">==</span><span class="st">"Total"</span> )</span>
+<span id="cb14-368"><a href="#cb14-368" aria-hidden="true" tabindex="-1"></a>df_oc<span class="ot">&lt;-</span><span class="fu">arrange</span>(df_oc,<span class="sc">-</span>tasa )</span>
+<span id="cb14-369"><a href="#cb14-369" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-370"><a href="#cb14-370" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-371"><a href="#cb14-371" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-372"><a href="#cb14-372" aria-hidden="true" tabindex="-1"></a>La comuna con mayor tasa de ocupación es <span class="in">`r df_oc$comuna[1]`</span> con <span class="in">`r round(df_oc$tasa[1],1)`</span> %, mientras que la menor tasa de ocupación se registró en <span class="in">`r df_oc$comuna[nrow(df_oc)]`</span> con <span class="in">`r round(df_oc$tasa[nrow(df_oc)],1)`</span> %.</span>
+<span id="cb14-373"><a href="#cb14-373" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-374"><a href="#cb14-374" aria-hidden="true" tabindex="-1"></a><span class="fu">## Tasa de participación a nivel comunal</span></span>
+<span id="cb14-375"><a href="#cb14-375" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-378"><a href="#cb14-378" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb14-379"><a href="#cb14-379" aria-hidden="true" tabindex="-1"></a>grafico_tasas_participacion <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df_p, <span class="fu">aes</span>(<span class="at">x =</span> comuna, <span class="at">y =</span> tasa, <span class="at">fill =</span> grupo)) <span class="sc">+</span></span>
+<span id="cb14-380"><a href="#cb14-380" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="fu">position_dodge</span>()) <span class="sc">+</span></span>
+<span id="cb14-381"><a href="#cb14-381" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Tasa de Participación por Comuna"</span>,</span>
+<span id="cb14-382"><a href="#cb14-382" aria-hidden="true" tabindex="-1"></a>                               <span class="at">x =</span> <span class="st">"Comuna"</span>,</span>
+<span id="cb14-383"><a href="#cb14-383" aria-hidden="true" tabindex="-1"></a>                               <span class="at">y =</span> <span class="st">"Tasa (%)"</span>,</span>
+<span id="cb14-384"><a href="#cb14-384" aria-hidden="true" tabindex="-1"></a>                               <span class="at">fill =</span> <span class="st">"Grupo"</span>) <span class="sc">+</span></span>
+<span id="cb14-385"><a href="#cb14-385" aria-hidden="true" tabindex="-1"></a>                             <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb14-386"><a href="#cb14-386" aria-hidden="true" tabindex="-1"></a>                             <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span>
+<span id="cb14-387"><a href="#cb14-387" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-388"><a href="#cb14-388" aria-hidden="true" tabindex="-1"></a>grafico_tasas_participacion</span>
+<span id="cb14-389"><a href="#cb14-389" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-390"><a href="#cb14-390" aria-hidden="true" tabindex="-1"></a>df_pc<span class="ot">&lt;-</span><span class="fu">filter</span>(df_p, grupo<span class="sc">==</span><span class="st">"Total"</span> )</span>
+<span id="cb14-391"><a href="#cb14-391" aria-hidden="true" tabindex="-1"></a>df_pc<span class="ot">&lt;-</span><span class="fu">arrange</span>(df_pc,<span class="sc">-</span>tasa )</span>
+<span id="cb14-392"><a href="#cb14-392" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-393"><a href="#cb14-393" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-394"><a href="#cb14-394" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-395"><a href="#cb14-395" aria-hidden="true" tabindex="-1"></a>La comuna con mayor tasa de participación <span class="in">`r df_pc$comuna[1]`</span> con <span class="in">`r round(df_pc$tasa[1],1)`</span> %, mientras que la menor tasa de participación se registró en <span class="in">`r df_pc$comuna[nrow(df_pc)]`</span> con <span class="in">`r round(df_pc$tasa[nrow(df_pc)],1)`</span> %.</span>
+<span id="cb14-396"><a href="#cb14-396" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-397"><a href="#cb14-397" aria-hidden="true" tabindex="-1"></a><span class="fu"># Conclusiones</span></span>
+<span id="cb14-398"><a href="#cb14-398" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-399"><a href="#cb14-399" aria-hidden="true" tabindex="-1"></a>En este documento se han presentado indicadores laborales para las comunas de la Región del Biobío, desagregados por sexo.</span>
+<span id="cb14-400"><a href="#cb14-400" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-401"><a href="#cb14-401" aria-hidden="true" tabindex="-1"></a>En el caso de las tasas de ocupación y participación, se aprecia un patrón similar al de las estimaciones a partir de la Encuesta Nacional de Empleo (ENE), es decir, grandes brechas en desmedro de las mujeres respecto de los hombres.</span>
+<span id="cb14-402"><a href="#cb14-402" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-403"><a href="#cb14-403" aria-hidden="true" tabindex="-1"></a>Sin embargo, en el caso de la tasa de desocupación, a diferencia de la ENE, la brecha entre hombres y mujeres en la tasa de desocupación es en desmedro de los hombres, es decir, éstos presentan una tasa de desocupación mayor que en el caso de las mujeres. Una hipótesis que podría explicar estas diferencias, y que puede ser parte de un estudio futuro, es la forma diferente en que se indaga acerca de la situación laboral de las personas, ya sea en el fraseo de las preguntas, flujo del cuestionario, entre otros.</span>
+<span id="cb14-404"><a href="#cb14-404" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-405"><a href="#cb14-405" aria-hidden="true" tabindex="-1"></a>En cualquier caso, es importante recalcar que la operación estadística que entrega cifras oficiales respecto de la situación de la población en edad de trabajar (PET) en el mercado laboral, es justamente la Encuesta Nacional de Empleo del INE.</span>
+<span id="cb14-406"><a href="#cb14-406" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-407"><a href="#cb14-407" aria-hidden="true" tabindex="-1"></a>El presente documento fue elaborado con el fin de aplicar los contenidos entregados en el curso Análisis de datos con R Intermedio.</span>
+</code><button title="Copiar al portapapeles" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
